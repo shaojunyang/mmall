@@ -24,6 +24,31 @@
         from mmall_user
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <!-- 查询用户 是否存在 -->
+    <select id="checkUsername" resultType="java.lang.Integer" parameterType="string">
+        select count(1) form mmall_user
+        where username = #{username}
+    </select>
+
+    <!--   用户 登录 功能  -->
+    <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
+        select
+        -- * 这样不好
+        <include refid="Base_Column_List"/>
+        from mmall_user
+        WHERE username = #{username}
+        AND password=#{password}
+    </select>
+
+    <!--  查询该邮箱是否 存在  -->
+    <select id="checkEmail" resultType="java.lang.Integer" parameterType="string">
+    SELECT  count(1)
+    from mmall_user
+    WHERE email = #{email}
+    </select>
+
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_user
     where id = #{id,jdbcType=INTEGER}
