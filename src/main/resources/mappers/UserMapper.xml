@@ -27,7 +27,7 @@
 
     <!-- 查询用户 是否存在 -->
     <select id="checkUsername" resultType="java.lang.Integer" parameterType="string">
-        select count(1) form mmall_user
+        select count(1) from mmall_user
         where username = #{username}
     </select>
 
@@ -46,6 +46,41 @@
     SELECT  count(1)
     from mmall_user
     WHERE email = #{email}
+    </select>
+
+    <!-- 根据用户名查询用户 密码提示问题 -->
+    <select id="selectQuestionByUsername" parameterType="string" resultType="java.lang.String">
+    select
+    mmall_user.question
+    from mmall_user
+    WHERE username = #{username}
+    </select>
+
+    <!-- 查询用户 密码提示问题的答案  -->
+    <select id="checkAnswer" resultType="java.lang.Integer" parameterType="map">
+      SELECT count(1)
+      from mmall_user
+      WHERE username = #{username}
+      and question = #{question}
+      and answer = #{answer}
+    </select>
+
+
+    <!-- 效验用户密码是否 和用户名匹配 -->
+    <select id="checkPassword" resultType="java.lang.Integer" parameterType="map">
+        select count(1)
+        FROM mmall_user
+        WHERE  id = #{userId}
+        and password = #{passwordOld}
+    </select>
+
+    <!--  根据id 校验 新的 邮箱是否存在
+    如果查询结果大于0 、说明其他人已经有这个邮箱了
+    -->
+    <select id="checkEmailByUserId" resultType="java.lang.Integer" parameterType="map">
+    select count(1) from mmall_user
+    WHERE email = #{email}
+    and id != #{userId}
     </select>
 
 
@@ -176,4 +211,13 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <!--  更新用户密码 -->
+    <update id="updatePasswordByUsername" parameterType="map">
+      UPDATE  mmall_user
+      SET password = #{md5passwordNew} ,update_time=now()
+      where username = #{username}
+    </update>
+
+
 </mapper>

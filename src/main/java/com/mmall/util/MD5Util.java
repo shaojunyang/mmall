@@ -43,11 +43,13 @@ public class MD5Util {
             else
                 resultString = byteArrayToHexString(md.digest(resultString.getBytes(charsetname)));
         } catch (Exception exception) {
+            exception.printStackTrace();
         }
         return resultString.toUpperCase();
     }
 
     public static String MD5EncodeUtf8(String origin) {
+        //origin = origin + PropertiesUtil.getProperty("password.salt", "");
         return MD5Encode(origin, "utf-8");
     }
 
