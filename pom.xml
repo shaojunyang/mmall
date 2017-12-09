@@ -201,7 +201,7 @@
         </dependency>
 
 
-        <!-- alipay -->
+        <!-- alipay 支付宝 -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
