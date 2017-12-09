@@ -12,11 +12,12 @@
 
     <appender name="mmall" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--<File>d:/mmalllog/mmall.log</File>-->
-        <!--<File>/developer/apache-tomcat-7.0.73/logs/mmall.log</File>-->
+        <File>/developer/apache-tomcat-7.0.73/logs/mmall.log</File>
         <!--<File>/root/Downloads/apache-tomcat-7.0.73/logs/mmall.log</File>-->
-        <File>/Library/apache-tomcat-7.0.82/logs/mmall.log</File>
+        <!--<File>/Library/apache-tomcat-7.0.82/logs/mmall.log</File>-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/Library/apache-tomcat-7.0.82/logs/mmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <fileNamePattern>/developer/apache-tomcat-7.0.73/logs/logsmmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <!--<fileNamePattern>/Library/apache-tomcat-7.0.82/logs/mmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
             <!--<fileNamePattern>/root/Downloads/apache-tomcat-7.0.73/logs/mmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
             <append>true</append>
             <maxHistory>10</maxHistory>
@@ -29,12 +30,13 @@
 
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--<File>d:/mmalllog/error.log</File>-->
-        <!--<File>/developer/apache-tomcat-7.0.73/logs/error.log</File>-->
+        <File>/developer/apache-tomcat-7.0.73/logs/error.log</File>
         <!--<File>/root/Downloads/apache-tomcat-7.0.73/logs/error.log</File>-->
-        <File>/Library/apache-tomcat-7.0.82/logs/error.log</File>
+        <!--<File>/Library/apache-tomcat-7.0.82/logs/error.log</File>-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按照 天的格式 输出 日志文件 -->
-            <fileNamePattern>/Library/apache-tomcat-7.0.82/logs/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <fileNamePattern>/developer/apache-tomcat-7.0.73/logs/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <!--<fileNamePattern>/Library/apache-tomcat-7.0.82/logs/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
             <!--<fileNamePattern>/root/Downloads/apache-tomcat-7.0.73/logs/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
             <!--<fileNamePattern>d:/mmalllog/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
             <append>true</append>
