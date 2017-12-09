@@ -1,6 +1,5 @@
 package com.mmall.controller.portal;
 
-import com.sun.deploy.net.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
