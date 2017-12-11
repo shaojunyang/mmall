@@ -123,7 +123,7 @@ public class UserServiceImpl implements IUserService {
 //       判断用户名 是否存在
         ServerResponse<String> validResponse = this.checkValid(username, Const.USERNAME);
 //         判断 session值
-        if (!validResponse.isSuccess()) {
+        if (validResponse.isSuccess()) {
 //            用户名不存在
             return ServerResponse.createByErrorMessage("用户不存在");
         }
