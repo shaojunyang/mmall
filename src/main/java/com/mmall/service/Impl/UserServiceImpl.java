@@ -39,7 +39,7 @@ public class UserServiceImpl implements IUserService {
 //        先查询用户是否存在
         int count = userMapper.checkUsername(username);
         if (count == 0) {
-            return ServerResponse.createBySuccessMessage("用户名不存在");
+            return ServerResponse.createByErrorMessage("用户名不存在");
         }
 //        密码登录 MD5 //
         String md5Password = MD5Util.MD5EncodeUtf8(password);
