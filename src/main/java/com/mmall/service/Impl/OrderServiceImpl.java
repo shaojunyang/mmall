@@ -804,7 +804,7 @@ public class OrderServiceImpl implements IOrderService {
         }
         //  判断订单状态
         if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
-            return ServerResponse.createBySuccess("支付宝重复调用");
+            return ServerResponse.createByErrorMessage("支付宝重复调用");
         }
         //  判断 回调状态
         if (Const.AlipayCallback.TRADE_STATUS_TRADE_SUCCESS.equals(tradeStatus)) {

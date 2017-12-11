@@ -63,11 +63,11 @@ public class UserServiceImpl implements IUserService {
         //        先查询用户是否存在
         int count = userMapper.checkUsername(user.getUsername());
         if (count > 0) {
-            return ServerResponse.createBySuccessMessage("用户名已经存在");
+            return ServerResponse.createByErrorMessage("用户名已经存在");
         }//查询邮箱是否存在
         int emailCount = userMapper.checkEmail(user.getEmail());
         if (emailCount > 0) {
-            return ServerResponse.createBySuccessMessage("邮箱已经存在");
+            return ServerResponse.createByErrorMessage("邮箱已经存在");
         }
 //        给该用户设置 权限
         user.setRole(Const.Role.ROLE_CUSTOMER);
@@ -96,14 +96,14 @@ public class UserServiceImpl implements IUserService {
 //                校验用户名
                 int count = userMapper.checkUsername(str);
                 if (count > 0) {
-                    return ServerResponse.createBySuccessMessage("用户名已经存在");
+                    return ServerResponse.createByErrorMessage("用户名已经存在");
                 }
             }
 //            校验email
             if (Const.EMAIL.equals(type)) {
                 int emailCount = userMapper.checkEmail(str);
                 if (emailCount > 0) {
-                    return ServerResponse.createBySuccessMessage("邮箱已经存在");
+                    return ServerResponse.createByErrorMessage("邮箱已经存在");
                 }
             }
         } else {
@@ -225,7 +225,7 @@ public class UserServiceImpl implements IUserService {
         if (updateCount > 0) {
             return ServerResponse.createBySuccessMessage("密码更新成功");
         }
-        return ServerResponse.createBySuccessMessage("密码更新失败");
+        return ServerResponse.createByErrorMessage("密码更新失败");
 
     }
 
