@@ -151,10 +151,10 @@ public class UserServiceImpl implements IUserService {
         int resultCount = userMapper.checkAnswer(username, question, answer);
 //        如果查询结果大于0 、说明是对的
         if (resultCount > 0) {
-//            说明问题及答案是这个用户的、并且是正确的
+            //说明问题及问题答案是这个用户的,并且是正确的
             String forgetToken = UUID.randomUUID().toString();
-//            把token放入本地缓存中
-            TokenCache.setKey("token_" + username, forgetToken);
+            //  把 token放入缓存
+            TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
             return ServerResponse.createBySuccess(forgetToken);
         }
         return ServerResponse.createByErrorMessage("问题答案错误");
@@ -178,12 +178,12 @@ public class UserServiceImpl implements IUserService {
         //       判断用户名 是否存在
         ServerResponse<String> validResponse = this.checkValid(username, Const.USERNAME);
 //         判断 session值
-        if (!validResponse.isSuccess()) {
+        if (validResponse.isSuccess()) {
 //            用户名不存在
             return ServerResponse.createByErrorMessage("用户不存在");
         }
         //获取 缓存中的token
-        String token = TokenCache.getKey("token_" + username);
+        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
 //效验token
 
         if (token.isEmpty()) {
