@@ -326,11 +326,11 @@ public class ProductServiceImpl implements IProductService {
             Category category = categoryMapper.selectByPrimaryKey(categoryId);
 
             // 如果查询分类为空 并且搜索关键字为空的话
-            if (category == null && keyword.isEmpty()) {
+            if (category == null && null ==keyword) {
                 // 没有该分类、并且没有关键字、返回空的结果集
-                PageHelper.startPage(pageNum, pageSize);
-                List<ProductDetailVo> productDetailVoList = Lists.newArrayList();
-                PageInfo pageInfo = new PageInfo(productDetailVoList);
+                PageHelper.startPage(pageNum,pageSize);
+                List<ProductListVo> productListVoList = Lists.newArrayList();
+                PageInfo pageInfo = new PageInfo(productListVoList);
                 return ServerResponse.createBySuccess(pageInfo);
             }
 
@@ -338,7 +338,7 @@ public class ProductServiceImpl implements IProductService {
             categoryIdList = iCategoryService.getCategoryAndChildrenById(category.getId()).getData();
         }
         //  判断搜索关键字是否是空的
-        if (!keyword.isEmpty()) {
+        if (null != keyword) {
             keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
         }
 
@@ -353,7 +353,7 @@ public class ProductServiceImpl implements IProductService {
             }
         }
 
-        List<Product> productList = productMapper.selectByNameAndCategoryIds(keyword.isEmpty() ? null : keyword, categoryIdList.size() == 0 ? null : categoryIdList);
+        List<Product> productList = productMapper.selectByNameAndCategoryIds(keyword==null ? null : keyword, categoryIdList.size() == 0 ? null : categoryIdList);
         //     构造vo对象
         List<ProductListVo> productListVoList = Lists.newArrayList();
         for (Product productItem : productList) {
