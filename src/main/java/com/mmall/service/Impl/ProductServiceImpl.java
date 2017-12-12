@@ -313,7 +313,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId, Integer pageNum, Integer pageSize, String orderBy) {
         // 效验 参数
-        if (keyword.isEmpty() && categoryId == null) {
+        if (null == keyword && categoryId == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), "搜索参数错误");
         }
 
@@ -335,7 +335,7 @@ public class ProductServiceImpl implements IProductService {
             }
 
             // 当传分类的时候、如果传的是高级分类、会调用递归算法把子孙的分类遍历出来放在集合中
-            categoryIdList = iCategoryService.getCategoryAndChildrenById(categoryId).getData();
+            categoryIdList = iCategoryService.getCategoryAndChildrenById(category.getId()).getData();
         }
         //  判断搜索关键字是否是空的
         if (!keyword.isEmpty()) {
