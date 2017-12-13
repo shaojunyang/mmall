@@ -244,6 +244,8 @@ public class OrderController {
 
         ServerResponse serverResponse = iOrderService.queryOrderPayStatus(user.getId(), orderNo);
         if (serverResponse.isSuccess()) {
+
+
             return ServerResponse.createBySuccess(true);
         }
         return ServerResponse.createBySuccess(false);

@@ -67,8 +67,8 @@ public class UserServiceImplTest {
     }
 
 
-    public void  test1(String str) {
-        if (Objects.equals(str,null)) {
+    public void test1(String str) {
+        if (Objects.equals(str, null)) {
             System.out.println(111);
         }
     }

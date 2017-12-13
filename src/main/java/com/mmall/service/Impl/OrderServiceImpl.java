@@ -494,12 +494,14 @@ public class OrderServiceImpl implements IOrderService {
         long orderNo = this.generateOrderNo();
         //     组装订单
         order.setOrderNo(orderNo);
+        order.setPayment(payment);
         order.setStatus(Const.OrderStatusEnum.NO_PAY.getCode());
         // 运费
         order.setPostage(0);
         // 支付方式
         order.setPaymentType(Const.PaymentTypeEnum.ONLINE_PAY.getCode());
         order.setUserId(userId);
+
         order.setShippingId(shippingId);
         //     发货时间等等
 
