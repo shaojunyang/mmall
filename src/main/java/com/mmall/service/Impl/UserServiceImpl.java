@@ -21,7 +21,7 @@ import java.util.UUID;
  * @author
  * @create 2017-11-24 下午7:11
  **/
-@Service("iUserService") //注入 service 接口
+@Service
 public class UserServiceImpl implements IUserService {
     //    注入 userMapper
     @Autowired

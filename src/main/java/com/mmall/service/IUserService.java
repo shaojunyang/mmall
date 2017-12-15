@@ -2,11 +2,13 @@ package com.mmall.service;
 
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
+import org.springframework.stereotype.Service;
 
 /**
  * 用户模块 接口
  * Created by yangshaojun on 2017/11/24.
  */
+
 public interface IUserService {
     //登录 接口
     ServerResponse<User> login(String username, String password);
