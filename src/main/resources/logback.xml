@@ -64,7 +64,7 @@
 
     <!-- geelynote mybatis log 日志 -->
     <!--  开发中打印sql语句 需要配置 -->
-    <logger name="com.mmall.dao" level="DEBUG"/>
+    <logger name="com.mmall.dao" level="INFO"/>
 
     <!--<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" >-->
     <!--<appender-ref ref="console"/>-->
