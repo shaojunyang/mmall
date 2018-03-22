@@ -4,6 +4,7 @@ import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
+import com.mmall.controller.portal.UserTest;
 import com.mmall.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 
@@ -28,6 +30,18 @@ public class UserController {
     //controller中注入service 接口
     @Autowired
     private IUserService iUserService;
+
+    @RequestMapping(value = "/test.do")
+    @ResponseBody
+    public UserTest get1(HttpServletRequest request, HttpServletResponse response) {
+        //response.addHeader("Access-Control-Allow-Origin", "*");
+        //response.addHeader("Access-Control-Allow-Methods", "*");
+
+        System.out.println("发送get1请求");
+        //System.out.println(callback);
+        return new UserTest("小明", 13);
+        //return callback+"("+new UserTest("小明", 13)+")";
+    }
 
     /**
      * 用户登录 handler
@@ -167,6 +181,7 @@ public class UserController {
         //更新 密码
         return iUserService.resetPassword(passwordOld, passwordNew, user);
     }
+
 
     /**
      * 更新用户个人信息
