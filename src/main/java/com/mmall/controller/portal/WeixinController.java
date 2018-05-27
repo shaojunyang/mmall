@@ -23,8 +23,9 @@ public class WeixinController {
     private static final long serialVersionUID = 1L;
     private String TOKEN = "weixintoken";
 
-    @RequestMapping(value = "/token")
+    @RequestMapping(value = "/token.do")
     public String weixin(HttpServletRequest request) {
+
          // 微信加密签名
         String signature = request.getParameter("signature");
         // 随机字符串
