@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -23,11 +24,10 @@ public class WeixinController {
     private static final long serialVersionUID = 1L;
     private String TOKEN = "weixintoken";
 
-    @RequestMapping(value = "/token.do")
-    public String weixin(HttpServletRequest request) {
+    @RequestMapping(value = "/token.do",method = RequestMethod.GET)
+    public String weixin(String signature,HttpServletRequest request) {
 
          // 微信加密签名
-        String signature = request.getParameter("signature");
         // 随机字符串
         String echostr = request.getParameter("echostr");
         // 时间戳
@@ -35,8 +35,8 @@ public class WeixinController {
         // 随机数
         String nonce = request.getParameter("nonce");
         if (null == signature) {
-           log.error("signtiure参数为空");
-           return "signtiure参数为空";
+           log.error("signature参数为空");
+           return "signature参数为空";
         }
         if (null == echostr) {
            log.error("echostr参数为空");
