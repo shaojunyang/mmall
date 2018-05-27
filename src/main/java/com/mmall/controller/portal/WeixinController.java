@@ -38,7 +38,7 @@ public class WeixinController {
         String nonce = request.getParameter("nonce");
         if (null == signature) {
            log.error("signature参数为空");
-            return "erere";
+            return "";
         }
         if (null == echostr) {
            log.error("echostr参数为空");
