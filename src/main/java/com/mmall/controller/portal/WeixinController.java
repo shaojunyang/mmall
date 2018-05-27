@@ -34,8 +34,21 @@ public class WeixinController {
         String timestamp = request.getParameter("timestamp");
         // 随机数
         String nonce = request.getParameter("nonce");
-
-        String[] str = { TOKEN, timestamp, nonce };
+        if (null == signature) {
+           log.error("signtiure参数为空");
+           return "signtiure参数为空";
+        }
+        if (null == echostr) {
+           log.error("echostr参数为空");
+            return "echostr参数为空";
+        }if (null == timestamp) {
+           log.error("timestamp参数为空");
+            return "timestamp参数为空";
+        }if (null == nonce) {
+           log.error("nonce参数为空");
+            return "nonce参数为空";
+        }
+        String[] str = {TOKEN, timestamp, nonce};
         Arrays.sort(str); // 字典序排序
         String bigStr = str[0] + str[1] + str[2];
         // SHA1加密，我这里用的是common-codec的jar包，你们也可以用java自带的消息消息摘要来写，只不过要多写几行代码，但结果都一样的
@@ -48,6 +61,6 @@ public class WeixinController {
             return  echostr;
         }
         log.error("发送错误");
-        return null;
+        return "---";
     }
 }
