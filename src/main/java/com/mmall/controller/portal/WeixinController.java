@@ -25,8 +25,9 @@ public class WeixinController {
     private static final long serialVersionUID = 1L;
     private String TOKEN = "weixintoken";
 
+    @ResponseBody
     @RequestMapping(value = "/token.do",method = RequestMethod.GET)
-    public Boolean weixin(String signature,HttpServletRequest request) {
+    public String weixin(String signature,HttpServletRequest request) {
 
          // 微信加密签名
         // 随机字符串
@@ -37,17 +38,17 @@ public class WeixinController {
         String nonce = request.getParameter("nonce");
         if (null == signature) {
            log.error("signature参数为空");
-            return false;
+            return "erere";
         }
         if (null == echostr) {
            log.error("echostr参数为空");
-            return false;
+            return "";
         }if (null == timestamp) {
            log.error("timestamp参数为空");
-            return false;
+            return "";
         }if (null == nonce) {
            log.error("nonce参数为空");
-            return false;
+            return "";
         }
         String[] str = {TOKEN, timestamp, nonce};
         Arrays.sort(str); // 字典序排序
@@ -58,10 +59,12 @@ public class WeixinController {
 
         // 确认请求来至微信
         if (digest.equals(signature)) {
+
             log.info("发送echostr 给微信 " + echostr + "\n");
-            return true;
+            return echostr;
         }
+
         log.error("发送错误");
-        return false;
+        return "";
     }
 }
