@@ -25,7 +25,6 @@ public class WeixinController {
     private static final long serialVersionUID = 1L;
     private String TOKEN = "weixintoken";
 
-    @ResponseBody
     @RequestMapping(value = "/token.do",method = RequestMethod.GET)
     public Boolean weixin(String signature,HttpServletRequest request) {
 
