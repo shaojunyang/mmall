@@ -8,6 +8,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -24,8 +25,9 @@ public class WeixinController {
     private static final long serialVersionUID = 1L;
     private String TOKEN = "weixintoken";
 
+    @ResponseBody
     @RequestMapping(value = "/token.do",method = RequestMethod.GET)
-    public String weixin(String signature,HttpServletRequest request) {
+    public Boolean weixin(String signature,HttpServletRequest request) {
 
          // 微信加密签名
         // 随机字符串
@@ -36,17 +38,17 @@ public class WeixinController {
         String nonce = request.getParameter("nonce");
         if (null == signature) {
            log.error("signature参数为空");
-           return "signature参数为空";
+            return false;
         }
         if (null == echostr) {
            log.error("echostr参数为空");
-            return "echostr参数为空";
+            return false;
         }if (null == timestamp) {
            log.error("timestamp参数为空");
-            return "timestamp参数为空";
+            return false;
         }if (null == nonce) {
            log.error("nonce参数为空");
-            return "nonce参数为空";
+            return false;
         }
         String[] str = {TOKEN, timestamp, nonce};
         Arrays.sort(str); // 字典序排序
@@ -58,9 +60,9 @@ public class WeixinController {
         // 确认请求来至微信
         if (digest.equals(signature)) {
             log.info("发送echostr 给微信 " + echostr + "\n");
-            return  echostr;
+            return true;
         }
         log.error("发送错误");
-        return "---";
+        return false;
     }
 }
