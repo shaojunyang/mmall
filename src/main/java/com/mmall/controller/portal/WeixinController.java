@@ -1,6 +1,8 @@
 package com.mmall.controller.portal;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import java.util.Arrays;
 @Controller
 @RequestMapping("/weixin")
 public class WeixinController {
+    private static final Logger log = LoggerFactory.getLogger(WeixinController.class);
     private static final long serialVersionUID = 1L;
     private String TOKEN = "weixintoken";
 
@@ -40,8 +43,10 @@ public class WeixinController {
 
         // 确认请求来至微信
         if (digest.equals(signature)) {
+            log.info("发送echostr 给微信 " + echostr + "\n");
             return  echostr;
         }
+        log.error("发送错误");
         return null;
     }
 }
