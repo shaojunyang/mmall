@@ -18,7 +18,7 @@ import java.util.Arrays;
 @RequestMapping("/weixin")
 public class WeixinController {
     private static final long serialVersionUID = 1L;
-    private String TOKEN = "这里随便填入32位以内的数字英文，也就是token";
+    private String TOKEN = "weixintoken";
 
     @RequestMapping(value = "/token")
     public String weixin(HttpServletRequest request) {
