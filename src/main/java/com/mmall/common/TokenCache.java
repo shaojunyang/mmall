@@ -48,4 +48,9 @@ public class TokenCache {
         }
         return null;
     }
+
+//    public static void main(String[] args) {
+//        setKey("age","19");;
+//        System.out.println(getKey("age"));
+//    }
 }

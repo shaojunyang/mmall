@@ -6,6 +6,9 @@ import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.controller.portal.UserTest;
 import com.mmall.service.IUserService;
+import com.mmall.util.CookieUtil;
+import com.mmall.util.JsonUtil;
+import com.mmall.util.RedisPoolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,27 +56,47 @@ public class UserController {
      */
     @RequestMapping(value = "/login.do")
     @ResponseBody
-    public ServerResponse<User> login(String username, String password, HttpSession session) {
+    public ServerResponse<User> login(String username, String password, HttpSession session, HttpServletResponse response) {
+
 //        调用 service
-        ServerResponse<User> response = iUserService.login(username, password);
-        if (response.isSuccess()) {
+        ServerResponse<User> res = iUserService.login(username, password);
+        if (res.isSuccess()) {
 //         如果 是 成功的话、把用户对象信息放入session
-            session.setAttribute(Const.CURRENT_USER, response.getData());
+//            session.setAttribute(Const.CURRENT_USER, response.getData());
+
+
+
+            // 把SessionId作为 cookie的 值，cookieId 是 “mmall_login_token常量”  写入浏览器
+            CookieUtil.writerLoginToken(response, session.getId());
+
+            // 把用户信息Session信息  存入 Redis
+            // key -> SessionID
+            // value -> User对象
+            RedisPoolUtil.setEx(session.getId(), JsonUtil.objToString(res.getData()), 60 * 30);
+
+            System.out.println(1);
         }
-        return response;
+        return res;
     }
 
     /**
      * 用户 登出功能
      *
-     * @param session
+     * @param
      * @return
      */
     @RequestMapping(value = "/logout.do")
     @ResponseBody
-    public ServerResponse<String> logout(HttpSession session) {
+    public ServerResponse<String> logout(HttpServletRequest request, HttpServletResponse response) {
 //        把用户的session删除
-        session.removeAttribute(Const.CURRENT_USER);
+//        session.removeAttribute(Const.CURRENT_USER);
+        // 从  request 读取 cookie
+        String loginToken = CookieUtil.readLoginToken(request);
+        // 删除 cookie
+        CookieUtil.delLogoutCookie(request,response);
+        // 同时 删除 Redis中这个用户的信息
+        RedisPoolUtil.del(loginToken);
+
         return ServerResponse.createBySuccess();
     }
 
@@ -113,11 +136,17 @@ public class UserController {
      */
     @RequestMapping(value = "/get_user_info.do")
     @ResponseBody
-    public ServerResponse<User> getUserInfo(HttpSession session) {
+    public ServerResponse<User> getUserInfo(HttpSession session,HttpServletRequest request) {
 
 //        从session中获取当前用户
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user != null) {
+//        User user = (User) session.getAttribute(Const.CURRENT_USER);
+
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (loginToken != null && !loginToken.isEmpty()) {
+
+            // 从redis中根据  loginToken 获取 用户密码
+            String userJsonStr = RedisPoolUtil.get(loginToken);
+            User user = JsonUtil.stringToObj(userJsonStr, User.class);
             //返回用户信息
             return ServerResponse.createBySuccess(user);
         }

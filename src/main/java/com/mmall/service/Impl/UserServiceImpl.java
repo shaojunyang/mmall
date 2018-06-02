@@ -36,6 +36,9 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public ServerResponse<User> login(String username, String password) {
+        if (username == null || password == null) {
+            return ServerResponse.createByErrorMessage("参数错误");
+        }
 //        先查询用户是否存在
         int count = userMapper.checkUsername(username);
         if (count == 0) {
