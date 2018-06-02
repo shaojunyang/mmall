@@ -59,4 +59,16 @@
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
 
+
+
+    <!--   重置session时间的fifter   -->
+    <filter>
+        <filter-name>sessionExpireFilter</filter-name>
+        <filter-class>com.mmall.controller.common.SessionExpireFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>sessionExpireFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
 </web-app>
