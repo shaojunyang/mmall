@@ -9,6 +9,7 @@ import com.mmall.service.IUserService;
 import com.mmall.util.CookieUtil;
 import com.mmall.util.JsonUtil;
 import com.mmall.util.RedisPoolUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,19 +58,17 @@ public class UserController {
     @RequestMapping(value = "/login.do")
     @ResponseBody
     public ServerResponse<User> login(String username, String password, HttpSession session, HttpServletResponse response) {
-
 //        调用 service
         ServerResponse<User> res = iUserService.login(username, password);
         if (res.isSuccess()) {
 //         如果 是 成功的话、把用户对象信息放入session
 //            session.setAttribute(Const.CURRENT_USER, response.getData());
 
-
-
-            // 把SessionId作为 cookie的 值，cookieId 是 “mmall_login_token常量”  写入浏览器
+            // 把SessionId作为 cookie 的 value值，
+            // cookieId 是 “mmall_login_token常量”  写入客户端浏览器
             CookieUtil.writerLoginToken(response, session.getId());
 
-            // 把用户信息Session信息  存入 Redis
+            // 把用户信息 Session信息  存入 Redis
             // key -> SessionID
             // value -> User对象
             RedisPoolUtil.setEx(session.getId(), JsonUtil.objToString(res.getData()), 60 * 30);
@@ -92,9 +91,11 @@ public class UserController {
 //        session.removeAttribute(Const.CURRENT_USER);
         // 从  request 读取 cookie
         String loginToken = CookieUtil.readLoginToken(request);
-        // 删除 cookie
+
+        // 删除客户端  cookie
         CookieUtil.delLogoutCookie(request,response);
-        // 同时 删除 Redis中这个用户的信息
+
+        // 同时 根据  loginToken 从 Redis中 删除 这个用户的信息
         RedisPoolUtil.del(loginToken);
 
         return ServerResponse.createBySuccess();
@@ -140,17 +141,20 @@ public class UserController {
 
 //        从session中获取当前用户
 //        User user = (User) session.getAttribute(Const.CURRENT_USER);
-
+        // 通过 request域中读取 Cookie的值
         String loginToken = CookieUtil.readLoginToken(request);
-        if (loginToken != null && !loginToken.isEmpty()) {
 
-            // 从redis中根据  loginToken 获取 用户密码
-            String userJsonStr = RedisPoolUtil.get(loginToken);
-            User user = JsonUtil.stringToObj(userJsonStr, User.class);
-            //返回用户信息
-            return ServerResponse.createBySuccess(user);
+        if (loginToken == null && loginToken.isEmpty()) {
+            return ServerResponse.createByErrorMessage("用户未登录、无法获取用户信息");
         }
-        return ServerResponse.createByErrorMessage("用户未登录、无法获取用户信息");
+
+        // 从redis中根据  loginToken 获取 用户User对象
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User user = JsonUtil.stringToObj(userJsonStr, User.class);
+        //返回用户信息
+        return ServerResponse.createBySuccess(user);
+
+
     }
 
     /**

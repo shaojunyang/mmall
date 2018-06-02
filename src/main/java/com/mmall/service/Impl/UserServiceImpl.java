@@ -8,6 +8,7 @@ import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
 import com.mmall.util.MD5Util;
+import com.mmall.util.RedisPoolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.security.provider.MD5;
@@ -157,7 +158,11 @@ public class UserServiceImpl implements IUserService {
             //说明问题及问题答案是这个用户的,并且是正确的
             String forgetToken = UUID.randomUUID().toString();
             //  把 token放入缓存
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
+//            TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
+
+            // 把token存入 Redis，并设置有效期
+            RedisPoolUtil.setEx(TokenCache.TOKEN_PREFIX + username , forgetToken, 60 * 60 * 12);
+
             return ServerResponse.createBySuccess(forgetToken);
         }
         return ServerResponse.createByErrorMessage("问题答案错误");
@@ -186,7 +191,9 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("用户不存在");
         }
         //获取 缓存中的token
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
+//        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
+        // 获取 Redis中设置的TokenCache
+        String token = RedisPoolUtil.get(TokenCache.TOKEN_PREFIX + username);
 //效验token
 
         if (token.isEmpty()) {
