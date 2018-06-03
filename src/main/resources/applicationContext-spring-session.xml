@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--&lt;!&ndash;   引入配置文件    &ndash;&gt;-->
+    <!--<bean id="propertyConfigurer"-->
+          <!--class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+        <!--<property name="order" value="2"/>-->
+        <!--<property name="ignoreUnresolvablePlaceholders" value="true"/>-->
+        <!--<property name="locations">-->
+            <!--<list>-->
+                <!--<value>classpath:mmall.properties</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="fileEncoding" value="utf-8"/>-->
+    <!--</bean>-->
+
+    <!--   注入 这个 Bean   -->
+    <bean id="redisHttpSessionConfiguration"
+          class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+        <!--   注入Session有效期属性 1800秒   -->
+        <property name="maxInactiveIntervalInSeconds" value="1800"/>
+    </bean>
+
+    <!--   注入 cookie   -->
+    <bean id="defaultCookieSerializer" class="org.springframework.session.web.http.DefaultCookieSerializer">
+        <property name="cookieName" value="mmall_login_token"></property>
+        <property name="domainName" value="localhost"></property>
+        <property name="useHttpOnlyCookie" value="true"/>
+        <property name="cookiePath" value="/"/>
+        <property name="cookieMaxAge" value="31533600"/>
+    </bean>
+
+    <!--   向这个类中注入属性，有默认值，可用点击进去看，也可以通过配置文件注入属性值   -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!--   最大连接数   -->
+        <property name="maxTotal" value="20"/>
+    </bean>
+
+    <!--&lt;!&ndash;   配置jedis连接工厂   &ndash;&gt;-->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <!--   还可以注入更多属性   -->
+        <property name="hostName" value="127.0.0.1"/>
+        <property name="poolConfig" ref="jedisPoolConfig"/>
+        <property name="port" value="6379"/>
+    </bean>
+
+
+
+</beans>
