@@ -8,7 +8,7 @@ import com.mmall.controller.portal.UserTest;
 import com.mmall.service.IUserService;
 import com.mmall.util.CookieUtil;
 import com.mmall.util.JsonUtil;
-import com.mmall.util.RedisPoolUtil;
+import com.mmall.util.RedisSharedPoolUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,7 +71,7 @@ public class UserController {
             // 把用户信息 Session信息  存入 Redis
             // key -> SessionID
             // value -> User对象
-            RedisPoolUtil.setEx(session.getId(), JsonUtil.objToString(res.getData()), 60 * 30);
+            RedisSharedPoolUtil.setEx(session.getId(), JsonUtil.objToString(res.getData()), 60 * 30);
 
             System.out.println(1);
         }
@@ -96,7 +96,7 @@ public class UserController {
         CookieUtil.delLogoutCookie(request,response);
 
         // 同时 根据  loginToken 从 Redis中 删除 这个用户的信息
-        RedisPoolUtil.del(loginToken);
+        RedisSharedPoolUtil.del(loginToken);
 
         return ServerResponse.createBySuccess();
     }
@@ -149,7 +149,7 @@ public class UserController {
         }
 
         // 从redis中根据  loginToken 获取 用户User对象
-        String userJsonStr = RedisPoolUtil.get(loginToken);
+        String userJsonStr = RedisSharedPoolUtil.get(loginToken);
         User user = JsonUtil.stringToObj(userJsonStr, User.class);
         //返回用户信息
         return ServerResponse.createBySuccess(user);

@@ -1,18 +1,21 @@
 package com.mmall.common;
 
 import com.mmall.util.PropertiesUtil;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.*;
+import redis.clients.util.Hashing;
+import redis.clients.util.Sharded;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yangshaojun
  * @create 2018-06-02 下午12:50
  **/
 
-public class RedisPool {
-    // jedis连接池 静态
-    private static JedisPool pool ;
+public class RedisShardedPool {
+    // jedis - shared 连接池 静态
+    private static ShardedJedisPool pool ;
     // 最大连接数
     private static Integer maxTotal = Integer.parseInt(PropertiesUtil.getProperty("redis.max.total","20"));
     // 最大空闲 连接实例个数
@@ -26,8 +29,12 @@ public class RedisPool {
 
 
     // redis ip,配置文件中读取
-    private static String redisIp = PropertiesUtil.getProperty("redis.1.ip");
-    private static Integer redisPort = Integer.parseInt(PropertiesUtil.getProperty("redis.1.port"));
+    private static String redis1Ip = PropertiesUtil.getProperty("redis.1.ip");
+    private static Integer redis1Port = Integer.parseInt(PropertiesUtil.getProperty("redis.1.port"));
+
+    private static String redis2Ip = PropertiesUtil.getProperty("redis.2.ip");
+    private static Integer redis2Port = Integer.parseInt(PropertiesUtil.getProperty("redis.2.port"));
+
 
     private static void initPool() {
         JedisPoolConfig config = new JedisPoolConfig();
@@ -41,36 +48,52 @@ public class RedisPool {
         config.setBlockWhenExhausted(true);
 
         // 实例化连接池
-        pool = new JedisPool(config,redisIp,redisPort,1000*2);
 
+        JedisShardInfo info1 = new JedisShardInfo(redis1Ip, redis1Port, 1000 * 2);
+//        info1.setPassword("xxx"); // 设置连接密码
+        JedisShardInfo info2 = new JedisShardInfo(redis2Ip,redis2Port,1000 * 2);// 超时时间两秒
+        // 添加到 List
+        List<JedisShardInfo> shardInfoArrayList = new ArrayList<>();
+        shardInfoArrayList.add(info1);
+        shardInfoArrayList.add(info2);
+
+        // 实例化连接池   第三个 参数 表示一致性 算法
+        pool = new ShardedJedisPool(config, shardInfoArrayList, Hashing.MURMUR_HASH , Sharded.DEFAULT_KEY_TAG_PATTERN);
     }
 
     static {
         initPool();// 初始化连接池
     }
 
-    // 开放连接池出去
-    public static Jedis getJedis() {
+    // 开放连接出去
+    public static ShardedJedis getJedis() {
         return pool.getResource();
     }
 
     // // 把Jedis实例放回正常的Resouce, 池子中
-    public static void returnResource(Jedis jedis) {
+    public static void returnResource(ShardedJedis jedis) {
             // 把Jedis实例放回连接池
             pool.returnResource(jedis);
     }
 
     // 把Jedis实例放回破损的Resouce
-    public static void returnBrokenResource(Jedis jedis) {
+    public static void returnBrokenResource(ShardedJedis jedis) {
         pool.returnBrokenResource(jedis);
     }
 
     public static void main(String[] args) {
-        Jedis jedis = pool.getResource();
-        jedis.set("name","yangshaojun.com");
-        returnResource(jedis);
+        ShardedJedis shardedJedis = pool.getResource();
 
-        pool.destroy();// 临时调用。销毁连接池中的所有连接
+//        shardedJedis.set("name","yangshaojun.com");
+
+        for (int i = 0; i < 10; i++) {
+            shardedJedis.set("key" + i , "value" + i);
+        }
+
+
+        returnResource(shardedJedis);
+
+//        pool.destroy();// 临时调用。销毁连接池中的所有连接
 
         System.out.println(" end ");
 

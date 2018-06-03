@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Time;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,8 +50,10 @@ public class TokenCache {
         return null;
     }
 
-//    public static void main(String[] args) {
+    public static void main(String[] args) {
 //        setKey("age","19");;
 //        System.out.println(getKey("age"));
-//    }
+        String name = "1.jpg";
+        System.out.println(name.hashCode());
+    }
 }
