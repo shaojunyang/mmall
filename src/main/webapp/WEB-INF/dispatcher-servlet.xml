@@ -45,11 +45,14 @@
 
 
 
+    <!--   SpringMVC拦截器   -->
     <mvc:interceptors>
         <!--   定义在这里的都会拦截   -->
         <mvc:interceptor>
             <mvc:mapping path="/manage/**"/>
-            <!--   配置 自定义 的 拦截器 class   -->
+            <!--   排除登录请求，不拦截   -->
+            <mvc:exclude-mapping path="/manage/user/login.do"/>
+            <!--   配置注入 自定义 的 拦截器 class   -->
             <bean class="com.mmall.common.interceptor.AhthorityInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

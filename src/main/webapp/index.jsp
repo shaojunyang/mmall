@@ -9,6 +9,7 @@
 springMVC上传图片
 <form name="form1" action="/manage/product/upload.do" method="post" enctype="multipart/form-data">
     <input type="file" name="file"/>
+    <input type="file" name="file"/>
     <input type="submit" value="springMVC上传文件">
 </form>
 

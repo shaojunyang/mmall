@@ -20,7 +20,7 @@
 
     <!-- 引入 spring 其他配置文件 -->
     <import resource="applicationContext-datasource.xml"/>
-    <import resource="applicationContext-spring-session.xml"/>
+    <!--<import resource="applicationContext-spring-session.xml"/>-->
 
 
 
