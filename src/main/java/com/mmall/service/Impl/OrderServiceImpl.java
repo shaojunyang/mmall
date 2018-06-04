@@ -29,6 +29,7 @@ import com.mmall.vo.OrderVo;
 import com.mmall.vo.ShippingVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -861,4 +862,41 @@ public class OrderServiceImpl implements IOrderService {
     }
 
 
+    /**
+     * 定时关单
+     * @param hour
+     */
+    @Override
+    public void closeOrder(int hour) {
+
+        Date closeDate = DateUtils.addHours(new Date(), -hour);
+        // 获取 未关闭订单的订单集合
+        List<Order> orderList = orderMapper.selectOrderStatusByCreateTime(Const.OrderStatusEnum.NO_PAY.getCode(),DateTimeUtil.dateToStr(closeDate));
+
+        // 遍历 未关闭订单的订单集合
+        for (Order order : orderList) {
+
+            List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
+
+            for (OrderItem orderItem : orderItems) {
+                // 查询库存- 一定要用主键where条件，防止锁表
+                Integer stock = productMapper.selectStockByProductId(order.getId());
+//             考虑已生成的订单里的商品，被删除的情况
+                if (stock == null) {
+                    continue;
+                }
+                // 创建商品， 设置属性
+                Product product = new Product();
+                product.setId(orderItem.getProductId());
+                product.setStock(stock + orderItem.getQuantity());
+
+                // 更新
+                productMapper.updateByPrimaryKeySelective(product);
+
+            }
+            // 关闭订单
+            orderMapper.closeOrderByOrderId(order.getId());
+            logger.info("关闭了订单 {}", order.getId());
+        }
+    }
 }

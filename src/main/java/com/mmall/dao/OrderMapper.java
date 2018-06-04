@@ -46,4 +46,22 @@ public interface OrderMapper {
      * @return
      */
     List<Order> selectAllOrder();
+
+
+    /**
+     * 查询未关闭订单的 订单集合
+     * @param status
+     * @param date
+     * @return
+     */
+    List<Order> selectOrderStatusByCreateTime(@Param("status") Integer status, @Param("date") String date);
+
+
+    /**
+     * 更新订单id关闭订单
+     * @param id
+     * @return
+     */
+    Integer closeOrderByOrderId(@Param("id") Integer id);
+
 }

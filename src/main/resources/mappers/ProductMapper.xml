@@ -69,6 +69,17 @@
     </select>
 
 
+
+ <!--   根据 商品id查询库存   -->
+    <select id="selectStockByProductId" resultType="java.lang.Integer" parameterType="Integer">
+        SELECT
+        stock
+        FROM mmall_product
+        WHERE id = #{id}
+        for update
+        -- 悲观锁，一定要使用主键查询，否则就会锁表
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_product
     where id = #{id,jdbcType=INTEGER}
@@ -218,4 +229,7 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+
 </mapper>

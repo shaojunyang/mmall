@@ -28,6 +28,10 @@ public interface OrderItemMapper {
     List<OrderItem> getByOrderNoUserId(@Param("orderNo") Long orderNo, @Param("userId") Integer userId);
 
 
+    List<OrderItem> getByOrderNo(@Param("orderNo") Long orderNo);
+
+
+
     /**
      * 批量 插入 订单明细
      *
@@ -35,5 +39,9 @@ public interface OrderItemMapper {
      */
     void batchInsert(@Param("orderItemList") List<OrderItem> orderItemList);
 
-    List<OrderItem> getByOrderNo(Long orderNo);
+
+
+
+
+
 }

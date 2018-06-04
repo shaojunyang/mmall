@@ -64,6 +64,22 @@
         ORDER BY create_time desc
     </select>
 
+
+
+    <!--  查询未关闭订单的 订单集合    -->
+    <select id="selectOrderStatusByCreateTime" resultMap="BaseResultMap" parameterType="map">
+
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM mmall_order
+        WHERE status = #{status}
+        <![CDATA[
+        and create_time <= #{date}
+        ]]>
+        order by create_time desc
+    </select>
+
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_order
     where id = #{id,jdbcType=INTEGER}
@@ -233,4 +249,18 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+    <!--   通过订单 id关闭订单   -->
+    <update id="closeOrderByOrderId" parameterType="integer">
+
+        UPDATE mmall_order
+        set status = 0
+        WHERE id = #{id}
+    </update>
+
+
+    <!--<select id="selectOrderStatusByCreateTime">-->
+<!---->
+    <!--</select>-->
 </mapper>
