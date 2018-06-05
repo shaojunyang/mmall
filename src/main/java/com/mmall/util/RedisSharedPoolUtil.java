@@ -5,6 +5,7 @@ import com.mmall.common.RedisShardedPool;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ShardedJedis;
+import sun.rmi.runtime.Log;
 
 /**
  * @author yangshaojun
@@ -40,6 +41,31 @@ public class RedisSharedPoolUtil {
     }
 
 
+
+    /**
+     * 设置的key 不存在时才可以设置成功 setnx
+     * @param key
+     * @param value
+     * @return
+     */
+    public static Long setnx(String key, String value) {
+        ShardedJedis jedis = null;
+        Long result = null;
+        try {
+            // 获取连接
+            jedis = RedisShardedPool.getJedis();
+            // 结果
+            result = jedis.setnx(key, value);
+        } catch (Exception e) {
+            log.error("setnx key : {} value : {} error", key, value, e);
+            // 出现异常。把连接放入破损的 连接池资源中
+            RedisShardedPool.returnBrokenResource(jedis);
+            return result;
+        }
+        // 没有出现异常，把连接放回正常的连接池中
+        RedisShardedPool.returnResource(jedis);
+        return result;
+    }
 
     /**
      * 设置带有效期 值
