@@ -44,8 +44,7 @@ public class CloseOrderTask {
         log.info("关闭订单定时任务启动");
         long timeout = 5000; // 分布式锁，锁的毫秒数
 
-
-        Long setnxResult = RedisSharedPoolUtil.setnx("CLOSE_ORDER_TASK_LOCK", String.valueOf(System.currentTimeMillis() + timeout));
+         Long setnxResult = RedisSharedPoolUtil.setnx("CLOSE_ORDER_TASK_LOCK", String.valueOf(System.currentTimeMillis() + timeout));
 
         if (setnxResult != null && setnxResult.intValue() == 1 ) {
             // 如果返回值=1，代表设置成功、获取锁
