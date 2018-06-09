@@ -102,6 +102,33 @@ public class RedisSharedPoolUtil {
      * @param value
      * @return
      */
+    public static String getSet(String key, String value) {
+        ShardedJedis jedis = null;
+        String result = null;
+
+        try {
+            // 获取连接
+            jedis = RedisShardedPool.getJedis();
+            // 结果
+            result = jedis.getSet(key, value);
+        } catch (Exception e) {
+            log.error("getSet key : {} value : {} error", key, value, e);
+            // 出现异常。把连接放入破损的 连接池资源中
+            RedisShardedPool.returnBrokenResource(jedis);
+            return result;
+        }
+        // 没有出现异常，把连接放回正常的连接池中
+        RedisShardedPool.returnResource(jedis);
+        return result;
+    }
+
+
+    /**
+     * 设置值
+     * @param key
+     * @param value
+     * @return
+     */
     public static String set(String key, String value) {
         ShardedJedis jedis = null;
         String result = null;
@@ -121,6 +148,8 @@ public class RedisSharedPoolUtil {
         RedisShardedPool.returnResource(jedis);
         return result;
     }
+
+
 /**
      * 获取值
      * @param key
