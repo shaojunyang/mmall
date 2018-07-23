@@ -59,4 +59,15 @@
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
 
+
+
+    <!--<filter>-->
+        <!--<filter-name>httpfilter</filter-name>-->
+        <!--<filter-class>com.mmall.Httpfilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+    <!--<filter-name>httpfilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+<!---->
 </web-app>
