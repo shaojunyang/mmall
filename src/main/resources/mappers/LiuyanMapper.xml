@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmall.dao.LiuyanMapper">
+    <resultMap id="BaseResultMap" type="com.mmall.pojo.Liuyan">
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="content" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, content, mobile
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from liuyan
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from  liuyan
+    </select>
+
+
+    <insert id="insert" parameterType="com.mmall.pojo.User">
+        insert into liuyan (id, name, content, mobile
+        )
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+        #{mobile,jdbcType=VARCHAR})
+    </insert>
+
+
+</mapper>
