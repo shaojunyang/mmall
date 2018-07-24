@@ -9,16 +9,20 @@
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+
+    <!-- 引入 spring 其他配置文件 -->
+    <import resource="applicationContext-datasource.xml"/>
+
+
+    <import resource="spring-mail.xml"/>
         <!-- 配置 包扫描 -->
     <context:component-scan base-package="com.mmall" annotation-config="true"/>
 
     <!--<context:annotation-config/>-->
     <aop:aspectj-autoproxy/>
 
-    <!-- 引入 spring 其他配置文件 -->
-    <import resource="applicationContext-datasource.xml"/>
 
 
-    <import resource="applicationContext_mail.xml"/>
+
 
 </beans>

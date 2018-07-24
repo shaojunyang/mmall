@@ -1,6 +1,7 @@
 package com.mmall.controller.portal.sms;
 
 import com.mmall.common.ServerResponse;
+import com.mmall.common.mail.PwdMailSender;
 import com.mmall.dao.LiuyanMapper;
 import com.mmall.pojo.Liuyan;
 import com.mmall.sms.JavaSmsApi;
@@ -73,9 +74,17 @@ public class SMSController {
 
         Integer insert = liuyanMapper.insert(liuyan);
         if (insert > 0) {
+            // 发送邮件
+            send_mail(liuyan);
             return ServerResponse.createBySuccessMessage("提交成功");
         }
         return ServerResponse.createBySuccessMessage("提交失败，请稍后重试");
+    }
+
+    private void send_mail(Liuyan liuyan) {
+       String content =   liuyan.getCreateTime().toString() + liuyan.getName() + "刚刚 在网站提交了试用申请留言，手机号码是： " +  liuyan.getMobile() + "回复内容为： " + liuyan.getContent() + "，请及时联系客户";
+        pwdMailSender.sendMail("1570482304@qq.com", "收到一条网站申请使用留言-请及时处理", content);
+
     }
 
 
@@ -96,6 +105,18 @@ public class SMSController {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+    }
+
+    @Autowired
+   private PwdMailSender pwdMailSender;
+
+    @ResponseBody
+    @RequestMapping("/send_mail.do")
+    public String  send_mail(){
+
+        pwdMailSender.sendMail("1570482304@qq.com", "在这里填写你所需要的内容", "邮件内容");
+
+        return "22";
     }
 
 
