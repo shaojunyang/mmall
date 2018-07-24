@@ -67,7 +67,7 @@ public class SMSController {
 
     @ResponseBody
     @RequestMapping("/save_liuyan.do")
-    public ServerResponse<String> save_liuyan(Liuyan liuyan, HttpServletResponse response,HttpServletRequest request) {
+    public ServerResponse<String> save_liuyan(Liuyan liuyan, HttpServletResponse response, HttpServletRequest request) {
 
         openOrigin(response, request);
 

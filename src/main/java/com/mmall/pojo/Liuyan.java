@@ -1,10 +1,14 @@
 package com.mmall.pojo;
 
+import java.util.Date;
+
 public class Liuyan {
     private Integer id;
     private String mobile;
     private String content;
     private String name;
+
+    private Date createTime;
 
     @Override
     public String toString() {
@@ -13,17 +17,19 @@ public class Liuyan {
                 ", mobile='" + mobile + '\'' +
                 ", content='" + content + '\'' +
                 ", name='" + name + '\'' +
+                ", createTime=" + createTime +
                 '}';
     }
 
     public Liuyan() {
     }
 
-    public Liuyan(Integer id, String mobile, String content, String name) {
+    public Liuyan(Integer id, String mobile, String content, String name, Date createTime) {
         this.id = id;
         this.mobile = mobile;
         this.content = content;
         this.name = name;
+        this.createTime = createTime;
     }
 
     public Integer getId() {
@@ -56,5 +62,14 @@ public class Liuyan {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

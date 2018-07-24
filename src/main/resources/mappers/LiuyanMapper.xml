@@ -10,7 +10,7 @@
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-        id, name, content, mobile
+        id, name, content, mobile, create_time
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -27,10 +27,10 @@
 
 
     <insert id="insert" parameterType="com.mmall.pojo.User">
-        insert into liuyan (id, name, content, mobile
+        insert into liuyan (id, name, content, mobile, create_time
         )
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
-        #{mobile,jdbcType=VARCHAR})
+        #{mobile,jdbcType=VARCHAR}, now())
     </insert>
 
 
