@@ -281,4 +281,44 @@ public class ProductManageController {
     }
 
 
+
+
+    /**
+     * 简历 上传文件
+     *
+     * @param file
+     * @param request
+     * @return
+     */
+    @RequestMapping("/upload_job.do")
+    @ResponseBody
+    public ServerResponse<Map> uploadJob(@RequestParam(value = "file", required = false) MultipartFile file, HttpServletRequest request, HttpSession session) {
+
+            // 判断上传的图片是否为空
+            if (file.getSize() == 0 ) {
+                return ServerResponse.createByErrorMessage("没有选择上传图片、图片为空、请重新选择图片上传");
+            }
+
+            //   填充上传文件 业务
+            //         拿到路径
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            // 上传文件、获取 上传之后的文件名
+            String targetFilename = iFileService.upload(file, path);
+            // 拼接  文件访问的url绝对路径
+            String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFilename;
+
+            // 把 图片 文件名和 文件绝对路径 组装成map返回前端
+            Map fileMap = Maps.newHashMap();
+            fileMap.put("uri", targetFilename);
+            fileMap.put("url", url);
+        fileMap.put("fileName", file.getOriginalFilename());
+            return ServerResponse.createBySuccess(fileMap);
+
+
+
+
+    }
+
+
+
 }
