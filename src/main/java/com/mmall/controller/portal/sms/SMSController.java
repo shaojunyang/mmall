@@ -165,7 +165,7 @@ public class SMSController {
      */
     private void openOrigin(HttpServletResponse response, HttpServletRequest request) {
 
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "http://www.araya.cn");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
