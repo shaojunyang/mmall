@@ -81,9 +81,13 @@ public class SMSController {
         return ServerResponse.createBySuccessMessage("提交失败，请稍后重试");
     }
 
+    /**
+     * 发送邮件
+     * @param liuyan 邮件内容
+     */
     private void send_mail(Liuyan liuyan) {
        String content =   liuyan.getCreateTime().toString() + liuyan.getName() + "刚刚 在网站提交了试用申请留言，手机号码是： " +  liuyan.getMobile() + "回复内容为： " + liuyan.getContent() + "，请及时联系客户";
-        pwdMailSender.sendMail("1570482304@qq.com", "收到一条网站申请使用留言-请及时处理", content);
+        pwdMailSender.sendMail("1570482304@qq.com", "收到一条网站申请试用留言-请及时处理", content);
 
     }
 
@@ -110,14 +114,18 @@ public class SMSController {
     @Autowired
    private PwdMailSender pwdMailSender;
 
-    @ResponseBody
-    @RequestMapping("/send_mail.do")
-    public String  send_mail(){
-
-        pwdMailSender.sendMail("1570482304@qq.com", "在这里填写你所需要的内容", "邮件内容");
-
-        return "22";
-    }
+//
+//    /**
+//     * 发送邮件
+//     * @return
+//     */
+//    @ResponseBody
+//    @RequestMapping("/send_mail.do")
+//    public void send_mail(){
+//
+//        pwdMailSender.sendMail("1570482304@qq.com", "在这里填写你所需要的内容", "邮件内容");
+//
+//    }
 
 
 
