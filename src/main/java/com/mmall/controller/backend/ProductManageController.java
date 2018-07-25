@@ -324,6 +324,7 @@ public class ProductManageController {
         resume.setName(file.getOriginalFilename());
         resume.setResumeUrl(url);
         resume.setResumeName(targetFilename);
+        resume.setName(name);
 
         Integer insert = resumeMapper.insert(resume);
 
