@@ -5,6 +5,7 @@ import com.mmall.common.mail.PwdMailSender;
 import com.mmall.dao.LiuyanMapper;
 import com.mmall.pojo.Liuyan;
 import com.mmall.sms.JavaSmsApi;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,11 +92,26 @@ public class SMSController {
      * @param liuyan 邮件内容
      */
     private void send_mail(Liuyan liuyan) {
-       String content =   liuyan.getCreateTime().toString() + liuyan.getName() + "刚刚 在网站提交了试用申请留言，手机号码是： " +  liuyan.getMobile() + "回复内容为： " + liuyan.getContent() + "，请及时联系客户";
-        pwdMailSender.sendMail("1570482304@qq.com", "收到一条网站申请试用留言-请及时处理", content);
+       String content =   dateToString() + liuyan.getName() + "  ,    刚刚 在网站提交了试用申请留言，手机号码是：  " +  liuyan.getMobile() + "  ,  回复内容为： " + liuyan.getContent() + "  ，请及时联系客户";
+        pwdMailSender.sendMail("yasong_wang@araya.cn", "收到一条网站申请试用留言-请及时处理", content);
 
     }
 
+    public String dateToString(){
+ //时间转字符串
+    //截取当前系统时间
+    Date currentTime = new Date();
+    //改变输出格式（自己想要的格式）
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //得到字符串时间
+    String s8 = formatter.format(currentTime);
+            return s8;
+    }
+
+    @Test
+    public void test1(){
+        System.out.println(dateToString());
+    }
 
     @ResponseBody
     @RequestMapping("/select_liuyan.do")
