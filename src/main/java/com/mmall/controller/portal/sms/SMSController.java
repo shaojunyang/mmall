@@ -63,12 +63,12 @@ public class SMSController {
         params.put("result", result);
         params.put("code", random.toString());
 
-        String s = JsonUtil.objToString(params);
+//        String s = JsonUtil.objToString(params);
 
-//        String r = "{'code':" + random + "}";
+        String r = "{'code':" + random + "}";
         //    加上返回参数
-//        r = callback + "(" + r + ")";
-        return s;
+        r = callback + "(" + r + ")";
+        return r;
 
     }
 
@@ -209,8 +209,8 @@ public class SMSController {
         params.put("result", result);
         params.put("code", random.toString());
 
-        String s = JsonUtil.objToStringPretty(params);
+        String s = JsonUtil.objToString(params);
 
-        System.out.println(s);
+        System.out.println();
     }
 }
