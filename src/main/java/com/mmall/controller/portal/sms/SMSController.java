@@ -1,5 +1,6 @@
 package com.mmall.controller.portal.sms;
 
+import com.alipay.api.internal.util.StringUtils;
 import com.mmall.common.ServerResponse;
 import com.mmall.common.mail.PwdMailSender;
 import com.mmall.dao.LiuyanMapper;
@@ -76,6 +77,15 @@ public class SMSController {
     @RequestMapping("/save_liuyan.do")
     public ServerResponse<String> save_liuyan(Liuyan liuyan, HttpServletResponse response, HttpServletRequest request) {
 
+        if (StringUtils.isEmpty(liuyan.getEmail())) {
+            liuyan.setEmail("空");
+        }
+        if (StringUtils.isEmpty(liuyan.getCompany())) {
+            liuyan.setCompany("空");
+        }
+
+
+
         openOrigin(response, request);
 
         Integer insert = liuyanMapper.insert(liuyan);
@@ -92,7 +102,8 @@ public class SMSController {
      * @param liuyan 邮件内容
      */
     private void send_mail(Liuyan liuyan) {
-       String content =   dateToString() + liuyan.getName() + "  ,    刚刚 在网站提交了试用申请留言，手机号码是：  " +  liuyan.getMobile() + "  ,  回复内容为： " + liuyan.getContent() + "  ，请及时联系客户";
+
+       String content =   dateToString() + liuyan.getName() + "  ,    刚刚 在网站提交了试用申请留言，手机号码是：  "  +  liuyan.getMobile() + "  ,  回复内容为： " + liuyan.getContent() + "  ，请及时联系客户";
         pwdMailSender.sendMail("yasong_wang@araya.cn", "收到一条网站申请试用留言-请及时处理", content);
 
     }
@@ -144,6 +155,14 @@ public class SMSController {
 //        pwdMailSender.sendMail("1570482304@qq.com", "在这里填写你所需要的内容", "邮件内容");
 //
 //    }
+
+    @ResponseBody
+    @RequestMapping("/test.do")
+    public String test(){
+
+        return "334";
+
+    }
 
 
 

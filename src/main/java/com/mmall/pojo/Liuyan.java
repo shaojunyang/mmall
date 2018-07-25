@@ -10,6 +10,9 @@ public class Liuyan {
 
     private Date createTime;
 
+    private String email;
+    private String company;
+
     @Override
     public String toString() {
         return "Liuyan{" +
@@ -18,18 +21,9 @@ public class Liuyan {
                 ", content='" + content + '\'' +
                 ", name='" + name + '\'' +
                 ", createTime=" + createTime +
+                ", email='" + email + '\'' +
+                ", company='" + company + '\'' +
                 '}';
-    }
-
-    public Liuyan() {
-    }
-
-    public Liuyan(Integer id, String mobile, String content, String name, Date createTime) {
-        this.id = id;
-        this.mobile = mobile;
-        this.content = content;
-        this.name = name;
-        this.createTime = createTime;
     }
 
     public Integer getId() {
@@ -64,12 +58,40 @@ public class Liuyan {
         this.name = name;
     }
 
-
     public Date getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public Liuyan() {
+    }
+
+    public Liuyan(Integer id, String mobile, String content, String name, Date createTime, String email, String company) {
+        this.id = id;
+        this.mobile = mobile;
+        this.content = content;
+        this.name = name;
+        this.createTime = createTime;
+        this.email = email;
+        this.company = company;
     }
 }

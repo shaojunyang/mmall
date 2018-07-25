@@ -8,10 +8,12 @@
             <arg column="content" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="company" jdbcType="VARCHAR" javaType="java.lang.String"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-        id, name, content, mobile, create_time
+        id, name, content, mobile, create_time, email, company
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -28,10 +30,10 @@
 
 
     <insert id="insert" parameterType="com.mmall.pojo.User">
-        insert into liuyan (id, name, content, mobile, create_time
+        insert into liuyan (id, name, content, mobile, create_time, email, company
         )
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
-        #{mobile,jdbcType=VARCHAR}, now())
+        #{mobile,jdbcType=VARCHAR}, now(),  #{email,jdbcType=VARCHAR},  #{company,jdbcType=VARCHAR})
     </insert>
 
 
