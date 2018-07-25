@@ -115,8 +115,8 @@ public class SMSController {
      * @param liuyan 邮件相关信息对象
      */
     private void send_mail(Liuyan liuyan) {
-//        String toMail = "yasong_wang@araya.cn";
-        String toMail = "shaojun_yang@araya.cn";
+        String toMail = "yasong_wang@araya.cn";
+//        String toMail = "shaojun_yang@araya.cn";
         String subject = "阿赖雅官网收到一条解决方案申请试用留言-请联系客户";
         String content = "时间: " + dateToString() + "\n" + "姓名: " + liuyan.getName() + "     刚刚 在网站提交了试用申请留言 。" + "\n" + " 手机号：  " + liuyan.getMobile() + "\n" + "邮箱 :" + liuyan.getEmail() + "\n" + "公司名称：" + liuyan.getCompany() + "\n" + " 回复内容为： " + liuyan.getContent() + "，请及时联系客户";
         pwdMailSender.sendMail(toMail, subject, content);
