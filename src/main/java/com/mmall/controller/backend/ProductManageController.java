@@ -300,7 +300,7 @@ public class ProductManageController {
     @RequestMapping("/upload_job.do")
     @ResponseBody
     public ServerResponse<Map> uploadJob(@RequestParam(value = "file", required = false) MultipartFile file, @RequestParam(value = "name", required = false) String name, HttpServletRequest request, HttpSession session, HttpServletResponse response) {
-        
+
 
         response.setHeader("Access-Control-Allow-Origin", "http://www.araya.cn");
         response.setHeader("Access-Control-Max-Age", "3600");
