@@ -6,6 +6,7 @@ import com.mmall.common.mail.PwdMailSender;
 import com.mmall.dao.LiuyanMapper;
 import com.mmall.pojo.Liuyan;
 import com.mmall.sms.JavaSmsApi;
+import com.mmall.util.JsonUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,10 +63,12 @@ public class SMSController {
         params.put("result", result);
         params.put("code", random.toString());
 
-        String r = "{'code':" + random + "}";
+        String s = JsonUtil.objToString(params);
+
+//        String r = "{'code':" + random + "}";
         //    加上返回参数
-        r = callback + "(" + r + ")";
-        return r;
+//        r = callback + "(" + r + ")";
+        return s;
 
     }
 
@@ -193,4 +196,21 @@ public class SMSController {
     }
 
 
+    @Test
+    public void t() throws IOException {
+
+        String ApiKEY = "82ed39a542435fbeabd2ea47fa53af0f";
+        Integer random = createRandom();
+        String text = "【云合万家】您的验证码是" + random + "。如非本人操作，请忽略本短信";
+
+        String result = JavaSmsApi.sendSms(ApiKEY, text, "13273091192");
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("result", result);
+        params.put("code", random.toString());
+
+        String s = JsonUtil.objToStringPretty(params);
+
+        System.out.println(s);
+    }
 }
