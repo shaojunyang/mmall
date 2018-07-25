@@ -26,6 +26,9 @@ import java.util.Map;
 @RequestMapping("/sms")
 public class SMSController {
 
+    @Autowired
+    private PwdMailSender pwdMailSender;
+
 
     @Autowired
     LiuyanMapper liuyanMapper;
@@ -110,9 +113,6 @@ public class SMSController {
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
     }
-
-    @Autowired
-   private PwdMailSender pwdMailSender;
 
 //
 //    /**
