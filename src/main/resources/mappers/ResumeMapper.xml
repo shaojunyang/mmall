@@ -5,8 +5,8 @@
         <constructor>
             <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="resumeName" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="resumeUrl" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="resume_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="resume_url" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         </constructor>
     </resultMap>
