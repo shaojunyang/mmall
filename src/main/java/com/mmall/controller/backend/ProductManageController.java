@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
+import com.mmall.controller.portal.sms.SMSController;
 import com.mmall.dao.ResumeMapper;
 import com.mmall.pojo.Product;
 import com.mmall.pojo.Resume;
@@ -298,7 +299,14 @@ public class ProductManageController {
      */
     @RequestMapping("/upload_job.do")
     @ResponseBody
-    public ServerResponse<Map> uploadJob(@RequestParam(value = "file", required = false) MultipartFile file, @RequestParam(value = "name") String name, HttpServletRequest request, HttpSession session) {
+    public ServerResponse<Map> uploadJob(@RequestParam(value = "file", required = false) MultipartFile file, @RequestParam(value = "name", required = false) String name, HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+        
+
+        response.setHeader("Access-Control-Allow-Origin", "http://www.araya.cn");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+
 
             // 判断上传的图片是否为空
             if (file.getSize() == 0 ) {
