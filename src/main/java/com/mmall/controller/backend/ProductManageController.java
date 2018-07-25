@@ -4,7 +4,9 @@ import com.google.common.collect.Maps;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
+import com.mmall.dao.ResumeMapper;
 import com.mmall.pojo.Product;
+import com.mmall.pojo.Resume;
 import com.mmall.pojo.User;
 import com.mmall.service.IFileService;
 import com.mmall.service.IProductService;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -282,6 +285,9 @@ public class ProductManageController {
 
 
 
+    @Autowired
+    private ResumeMapper resumeMapper;
+
 
     /**
      * 简历 上传文件
@@ -292,7 +298,7 @@ public class ProductManageController {
      */
     @RequestMapping("/upload_job.do")
     @ResponseBody
-    public ServerResponse<Map> uploadJob(@RequestParam(value = "file", required = false) MultipartFile file, HttpServletRequest request, HttpSession session) {
+    public ServerResponse<Map> uploadJob(@RequestParam(value = "file", required = false) MultipartFile file, @RequestParam(value = "name") String name, HttpServletRequest request, HttpSession session) {
 
             // 判断上传的图片是否为空
             if (file.getSize() == 0 ) {
@@ -312,11 +318,36 @@ public class ProductManageController {
             fileMap.put("uri", targetFilename);
             fileMap.put("url", url);
         fileMap.put("fileName", file.getOriginalFilename());
-            return ServerResponse.createBySuccess(fileMap);
+
+
+        Resume resume = new Resume();
+        resume.setName(file.getOriginalFilename());
+        resume.setResumeUrl(url);
+        resume.setResumeName(targetFilename);
+
+        Integer insert = resumeMapper.insert(resume);
+
+
+        return ServerResponse.createBySuccess(fileMap);
 
 
 
 
+    }
+
+
+    /** 查询简历列表
+     * @param file
+     * @param name
+     * @param request
+     * @param session
+     * @return
+     */
+    @RequestMapping("/select_job.do")
+    @ResponseBody
+    public ServerResponse<List<Resume>> selectJob() {
+        List<Resume> all = resumeMapper.findAll();
+        return ServerResponse.createBySuccess(all);
     }
 
 

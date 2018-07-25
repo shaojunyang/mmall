@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmall.dao.ResumeMapper">
+    <resultMap id="BaseResultMap" type="com.mmall.pojo.Resume">
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="resumeName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="resumeUrl" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, resume_name, resume_url, create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from liuyan
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from  resume
+        order by create_time desc
+    </select>
+
+
+    <insert id="insert" parameterType="com.mmall.pojo.Resume">
+        insert into resume (id, name, resume_name, resume_url, create_time
+        )
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{resumeName,jdbcType=VARCHAR},
+        #{resumeUrl,jdbcType=VARCHAR}, now()  )
+    </insert>
+
+
+</mapper>
